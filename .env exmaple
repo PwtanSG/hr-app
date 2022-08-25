@@ -1,4 +1,4 @@
 NODE_ENV = development
 PORT = 5000
-MONGO_URI = mongodb+srv://mgdbpw1:Mgdb018901@clusterpw1.vxmiuie.mongodb.net/hrapp?retryWrites=true&w=majority
-JWT_SECRET = abc0123
+MONGO_URI = mongodb+srv://dbname:password@clustername.vxmiuie.mongodb.net/hrapp?retryWrites=true&w=majority
+JWT_SECRET = abc12345
