@@ -1,0 +1,101 @@
+const asyncHandler = require('express-async-handler')
+const Attendance = require('../models/attendanceModel')
+const User = require('../models/userModel')
+const moment = require('moment')
+
+const getAttendances = asyncHandler(async (req, res) => {
+    // const attendances = await Attendance.find(({ user: '62f7dc97f7fdef5c16f2a4e0'}))
+    const attendances = await Attendance.find(({ user: req.user._id.valueOf()}))
+    res.status(200).json(attendances)
+})
+
+const createAttendances = asyncHandler(async (req, res) => {
+    const todayDate = moment().format('YYYY-MM-DD')
+    const whereConditions = {
+                        date: todayDate,
+                        user: req.user._id.valueOf()
+                    }
+    const userAttendance = await Attendance.find(whereConditions)
+
+    if (userAttendance.length === 0){
+        const attendance = await Attendance.create({
+            date: todayDate,
+            time_in: moment().format("HH:mm:ss"),
+            time_out: '',
+            user: req.user._id.valueOf()
+        })
+        res.status(201).json(attendance)
+    }else{
+        res.status(201).json('record exist')
+    }
+})
+
+const clockOutAttendances = asyncHandler(async (req, res) => {
+    const todayDate = moment().format('YYYY-MM-DD')
+    const whereCondition = {
+        date: todayDate,
+        user: req.user._id.valueOf()
+    }
+    const userAttendance = await Attendance.findOne(whereCondition)
+    if(!userAttendance.time_out){
+        userAttendance.time_out =  moment().format("HH:mm:ss");
+        try {
+            await userAttendance.save();
+            res.status(201).json({message: 'Successfully clock out'})
+        } catch (error) {
+            res.status(401).json({error: 'Error clocking out'})
+        }
+    } else {
+        res.status(201).json({message: 'You have already clock out.'})
+    }
+})
+
+const updateAttendances = asyncHandler(async (req, res) => {
+    const attendance = await Attendance.findById(req.params.id)
+    if (!attendance) {
+        res.status(400).json({ message: "record not found" })
+    }
+
+    const user = await User.findById(req.user._id)
+    if(!user){
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    if(attendance.user.toString() !== user.id){
+        res.status(401)
+        throw new Error('Not authorized')
+    }
+    attendance.date = req.body.date;
+    await attendance.save();
+
+    res.status(200).json({message: `update attendance ${req.params.id}`})
+})
+
+const deleteAttendances = asyncHandler(async (req, res) => {
+    const attendance = await Attendance.findById(req.params.id)
+    if (!attendance) {
+        res.status(400).json({ message: "record not found" })
+    }
+    const user = await User.findById(req.user._id)
+    if(!user){
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    if(attendance.user.toString() !== user.id){
+        res.status(401)
+        throw new Error('Not authorized')
+    }
+    
+    await attendance.remove()
+    res.status(200).json({ message: `delete attendance ${req.params.id}` })
+})
+
+module.exports = {
+    getAttendances,
+    createAttendances,
+    updateAttendances,
+    deleteAttendances,
+    clockOutAttendances
+}
