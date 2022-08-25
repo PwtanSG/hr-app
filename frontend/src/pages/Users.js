@@ -12,7 +12,7 @@ const Users = () => {
         // } catch (err) {
         //     console.log(err)
         // }
-        axios.get('http://localhost:5000/api/users/list')
+        axios.get('/api/users/list')
             .then(function (response) {
                 // handle success
                 console.log(response.data);
