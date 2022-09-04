@@ -51,6 +51,44 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 })
 
+
+const createUser = asyncHandler(async (req, res) => {
+    const { staff_no, name, email, address, designation, gender, is_admin, password } = req.body
+    // Validate
+    if (!name || !email || !password){
+        res.status(400)
+        throw new Error('Please add all fields')
+    }
+    const userExits = await User.findOne({email})
+    if (userExits){
+        res.status(400)
+        throw new Error('User already exist.')
+    }
+    //hash password
+    const salt = await bcrypt.genSalt(10)
+    const hashPassword = await bcrypt.hash(password, salt)
+    const user = await User.create({
+        staff_no,
+        name,
+        email,
+        address,
+        gender,
+        designation,
+        is_admin,
+        password: hashPassword
+    })
+    if(user){
+        res.status(201).json({
+            _id: user.id,
+            name: user.name,
+            email: user.email
+        })
+    } else {
+        res.status(400)
+        throw new Error('User registration fails')
+    }
+})
+
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password} = req.body
     const user = await User.findOne({email})
@@ -89,5 +127,6 @@ module.exports = {
     registerUser,
     loginUser,
     getMe,
-    listUsers
+    listUsers,
+    createUser
 }

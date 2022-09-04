@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
-    const API_URL = '/api/users/login'
-    // const API_URL = 'http://localhost:5000/api/users/login'
+    //const API_URL = '/api/users/login'
+    const API_URL = 'http://localhost:5000/api/users/login'
+    // console.log(API_URL)
     const test = ":"
     const navigate = useNavigate()
 
@@ -35,11 +36,10 @@ const Login = () => {
         e.preventDefault()
         try {
             const response = await axios.post(API_URL, formData)
-            console.log(response)
+            // console.log(response)
             if (response.status === 200) {
                 if (response?.data){
                     localStorage.setItem('user', JSON.stringify(response.data))
-                    // console.log('0000')
                     navigate('/users')
                 }else{
                     setStatus({
@@ -62,7 +62,7 @@ const Login = () => {
                 <h1>
                     <FaSignInAlt /> Login
                 </h1>
-                <p>Login your account</p>
+                <p>Login your account now</p>
                 <FaSpinner />
             </section>
             <section className='form'>
