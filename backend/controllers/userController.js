@@ -85,7 +85,7 @@ const createUser = asyncHandler(async (req, res) => {
         })
     } else {
         res.status(400)
-        throw new Error('User registration fails')
+        throw new Error('User creation fails')
     }
 })
 
@@ -101,7 +101,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
         })
     } else {
-        res.status(200)
+        res.status(400)
         throw new Error('Invalid credential')
     }
 })

@@ -5,7 +5,8 @@ const moment = require('moment')
 
 const getAttendances = asyncHandler(async (req, res) => {
     // const attendances = await Attendance.find(({ user: '62f7dc97f7fdef5c16f2a4e0'}))
-    const attendances = await Attendance.find(({ user: req.user._id.valueOf()}))
+    const attendances = await Attendance.find()
+    // const attendances = await Attendance.find(({ user: req.user.valueOf()}))
     res.status(200).json(attendances)
 })
 

@@ -5,14 +5,15 @@ import { useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
+    const [isLoading, setLoading] = useState(false)
     //const API_URL = '/api/users/login'
-    const API_URL = 'http://localhost:5000/api/users/login'
+    // const API_URL = 'http://localhost:5000/api/users/login'
+    // const API_URL = 'http://localhost:5000'
+    const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
     // console.log(API_URL)
-    const test = ":"
     const navigate = useNavigate()
 
     const initStatus = {
-        loading: false,
         error: false,
         errorMessage: ''
     }
@@ -35,7 +36,9 @@ const Login = () => {
     const onSubmitHandler = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(API_URL, formData)
+            setLoading(true)
+            const response = await axios.post(`${API_URL}/api/users/login`, formData)
+            // const response = await axios.post(`${API_URL}`, formData)
             // console.log(response)
             if (response.status === 200) {
                 if (response?.data){
@@ -49,10 +52,21 @@ const Login = () => {
                     })
                 }
             } else {
-
+                setStatus({
+                    ...status, 
+                    error:true, 
+                    errorMessage: response.message
+                })
             }
+            setLoading(false)
         } catch (error) {
             console.log(error)
+            setStatus({
+                error: true,
+                // errorMessage: 'Login fail.'
+                errorMessage: error.response.data.message
+            })
+            setLoading(false)
         }
     }
     console.log()
@@ -63,7 +77,7 @@ const Login = () => {
                     <FaSignInAlt /> Login
                 </h1>
                 <p>Login your account now</p>
-                <FaSpinner />
+                {isLoading && <FaSpinner className="icon_pulse"/> }
             </section>
             <section className='form'>
                 <form onSubmit={onSubmitHandler}>
@@ -87,7 +101,7 @@ const Login = () => {
                             onChange={onChangeHandler}
                         ></input>
                     </div>
-                    {status.error && <div>Error</div>}
+                    {status.error && <div className='info'>{ status.errorMessage }</div>}
                     <button type='submit' className='btn btn-block'>
                         Submit
                     </button>

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
 * {
   margin: 0;
   padding: 0;
@@ -197,6 +196,20 @@ h3 {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.icon_pulse {
+  animation: circle 1.2s steps(8) infinite;
+}
+
+@keyframes circle {
+  from {
+      transform: rotate(90deg);
+  }
+
+  to {
+      transform: rotate(450deg);
   }
 }
 

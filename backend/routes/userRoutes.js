@@ -3,7 +3,7 @@ const router = express.Router()
 const { registerUser, loginUser, getMe, listUsers, createUser} = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 
-router.get('/list', listUsers)
+router.get('/list',protect, listUsers)
 // router.post('/register', registerUser)
 router.post('/create', createUser)
 router.post('/login', loginUser)
