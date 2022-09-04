@@ -6,6 +6,7 @@ import Users from "./pages/Users";
 import Header from "./components/Header";
 import CreateUser from "./pages/CreateUser";
 import AttendanceList from "./pages/Attendance/AttendanceList";
+import UnAuthorizedScreen from "./pages/UnAuthorizedScreen";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/create" element={<CreateUser />} />
             <Route path="/attendance" element={<AttendanceList />} />
+            <Route path="/unauthorized" element={<UnAuthorizedScreen />} />
           </Routes>
         </div>
       </Router>

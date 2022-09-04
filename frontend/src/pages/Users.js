@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { FaSpinner } from 'react-icons/fa'
-// import axios from "../api/axios"
+import { useNavigate } from 'react-router-dom'
 
 const Users = () => {
     const [userList, setUserList] = useState([])
@@ -12,10 +12,14 @@ const Users = () => {
     }
     const [status, setStatus] = useState(initStatus)
     const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
-    const user = localStorage.getItem('user')
-    console.log('user',user['token'])
+    const user = JSON.parse(localStorage.getItem('user'))
+    // console.log('user',user['token'])
     // console.log(user?.token? user.token ? :'')
     // const API_URL = 'http://localhost:5000'
+    const navigate = useNavigate()
+    if (!user?.token){
+        navigate('/login')
+    }
 
     useEffect(() => {
         setLoading(true)
@@ -28,8 +32,8 @@ const Users = () => {
                     url: `${API_URL}/api/users/list`,
                     // url: process.env.REACT_APP_API_URL + '/user/getPermissionsByUser',
                     headers: {
-                        // Authorization: `Bearer ${user.token}`,
-                        Authorization: 'Bearer '+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI4NjI3NiwiZXhwIjoxNjYyMjg5ODc2fQ.okaYOqaR5LlnrhFLWY5YSKiN0SSt1jWIxbebbEZNfWU",
+                        Authorization: `Bearer ${user.token}`,
+                        // Authorization: 'Bearer '+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI4NjI3NiwiZXhwIjoxNjYyMjg5ODc2fQ.okaYOqaR5LlnrhFLWY5YSKiN0SSt1jWIxbebbEZNfWU",
                     },
                 })
                 setUserList(response.data)
