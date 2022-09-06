@@ -11,7 +11,8 @@ const Users = () => {
         errorMessage: ''
     }
     const [status, setStatus] = useState(initStatus)
-    const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
+    // const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
+    const API_URL = ''
     const user = JSON.parse(localStorage.getItem('user'))
     // console.log('user',user['token'])
     // console.log(user?.token? user.token ? :'')
