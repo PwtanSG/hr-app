@@ -9,7 +9,8 @@ const Login = () => {
     //const API_URL = '/api/users/login'
     // const API_URL = 'http://localhost:5000/api/users/login'
     // const API_URL = 'http://localhost:5000'
-    const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
+    // const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
+    const API_URL = ''
     // console.log(API_URL)
     const navigate = useNavigate()
 
