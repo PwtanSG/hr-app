@@ -3,7 +3,14 @@ const Attendance = require('../models/attendanceModel')
 const User = require('../models/userModel')
 const moment = require('moment')
 
-const getAttendances = asyncHandler(async (req, res) => {
+const getMyAttendances = asyncHandler(async (req, res) => {
+    // const attendances = await Attendance.find(({ user: '62f7dc97f7fdef5c16f2a4e0'}))
+    // const attendances = await Attendance.find()
+    const attendances = await Attendance.find(({ user: req.user.valueOf() }))
+    res.status(200).json(attendances)
+})
+
+const getAttendanceList = asyncHandler(async (req, res) => {
     // const attendances = await Attendance.find(({ user: '62f7dc97f7fdef5c16f2a4e0'}))
     const attendances = await Attendance.find()
     // const attendances = await Attendance.find(({ user: req.user.valueOf()}))
@@ -11,19 +18,20 @@ const getAttendances = asyncHandler(async (req, res) => {
 })
 
 const createAttendances = asyncHandler(async (req, res) => {
-    const todayDate = moment().format('YYYY-MM-DD')
+    const todayDate = moment().format('DD-MMM-YYYY')
+    // const todayDate = moment().format('YYYY-MM-DD')
     const whereConditions = {
                         date: todayDate,
                         user: req.user._id.valueOf()
                     }
     const userAttendance = await Attendance.find(whereConditions)
-
     if (userAttendance.length === 0){
         const attendance = await Attendance.create({
             date: todayDate,
             time_in: moment().format("HH:mm:ss"),
             time_out: '',
-            user: req.user._id.valueOf()
+            user: req.user._id.valueOf(),
+            name: req.user.name
         })
         res.status(201).json(attendance)
     }else{
@@ -94,7 +102,8 @@ const deleteAttendances = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-    getAttendances,
+    getMyAttendances,
+    getAttendanceList,
     createAttendances,
     updateAttendances,
     deleteAttendances,

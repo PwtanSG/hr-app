@@ -12,8 +12,8 @@ const protect = asyncHandler (async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
             //get user from token
             req.user = await User.findById(decoded.id).select('-password')
-            console.log('auth middleware')
-            console.log(req.user)
+            // console.log('auth middleware')
+            // console.log('user',req.user.name)
             //call next middleware
             next()
         } catch (error) {

@@ -1,7 +1,7 @@
 
 const NotFoundScreen = () => {
   return (
-    <div>NotFoundScreen</div>
+    <div>Page Not Found.</div>
   )
 }
 

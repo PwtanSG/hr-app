@@ -7,6 +7,10 @@ const attendanceSchema = mongoose.Schema(
         required: true,
         ref: 'User'
     },
+    name:{
+        type: String,
+        required: [true, 'Name is required.']
+    },
     date:{
         type: String,
         required: [true, 'Please add a date']

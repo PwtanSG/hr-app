@@ -27,7 +27,7 @@ const AttendanceList = () => {
       try {
         const response = await axios({
           method: 'get',
-          url: `${API_URL}/api/attendances/`,
+          url: `${API_URL}/api/attendances/list`,
           headers: {
             Authorization: `Bearer ${user.token}`,
             // Authorization: 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI5ODIwNiwiZXhwIjoxNjYyMzAxODA2fQ.BSzYXxecKcTKTH7pNZmGam-2SA0Ta8yrlQi4dd-2Zww",
@@ -49,28 +49,31 @@ const AttendanceList = () => {
     setLoading(false)
 
   }, [API_URL])
+  
   return (
     <div>
       <h1>Attendance List</h1>
       <div className="container">
         {isLoading && <FaSpinner className="icon_pulse" />}
         {(attendanceList.length > 0) &&
-          <table>
+          <table className='attendance'>
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>User</th>
                 <th>Date</th>
+                <th>Name</th>
                 <th>Time in</th>
+                <th>Time out</th>
               </tr>
             </thead>
             <tbody>
               {!isLoading && attendanceList.map((attendance, idx) => (
                 <tr key={attendance._id}>
                   <td>{idx + 1}</td>
-                  <td>{attendance.user}</td>
                   <td>{attendance.date}</td>
+                  <td>{attendance.name}</td>
                   <td>{attendance.time_in}</td>
+                  <td>{attendance.time_out}</td>
                 </tr>
               ))}
             </tbody>

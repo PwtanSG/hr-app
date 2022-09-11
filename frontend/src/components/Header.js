@@ -13,7 +13,7 @@ const Header = () => {
     return (
         <header className='header'>
             <div className='logo'>
-                <Link to='/attendance'>Attendance</Link>
+                <Link to='/attendance/myattendance'>Attendance</Link>
             </div>
             <ul>
                 <li>

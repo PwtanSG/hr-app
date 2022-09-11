@@ -6,9 +6,10 @@ import Users from "./pages/Users";
 import UserList from "./pages/UserList";
 import Header from "./components/Header";
 import CreateUser from "./pages/CreateUser";
-import AttendanceTaking from "./pages/Attendance/AttendanceTaking";
+import MyAttendance from "./pages/Attendance/MyAttendances";
 import AttendanceList from "./pages/Attendance/AttendanceList";
 import UnAuthorizedScreen from "./pages/UnAuthorizedScreen"
+import NotFoundScreen from "./pages/NotFoundScreen";
 import Staff from "./pages/Staff";
 
 function App() {
@@ -25,10 +26,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/create" element={<CreateUser />} />
-            <Route path="/attendance" element={<AttendanceTaking />} />
-            <Route path="/attendancelist" element={<AttendanceList />} />
+            <Route path="/attendance/myattendance" element={<MyAttendance />} />
+            <Route path="/attendance/list" element={<AttendanceList />} />
             <Route path="/unauthorized" element={<UnAuthorizedScreen />} />
             <Route path="/staff" element={<Staff />} />
+            <Route path="*" element={<NotFoundScreen />} />
           </Routes>
         </div>
       </Router>

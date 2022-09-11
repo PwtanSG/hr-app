@@ -213,6 +213,21 @@ h3 {
   }
 }
 
+.attendance {
+  border-collapse: collapse;
+}
+
+.attendance th, td{
+  padding: 5px;
+  border: 1px solid;
+  border-collapse: collapse;
+}
+.attendance th, td{
+  padding: 5px;
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
 @media (max-width: 600px) {
   .form {
     width: 90%;

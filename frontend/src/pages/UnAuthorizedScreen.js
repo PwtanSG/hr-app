@@ -1,7 +1,7 @@
 
 const UnAuthorizedScreen = () => {
   return (
-    <div>UnAuthorizedScreen</div>
+    <div>UnAuthorized</div>
   )
 }
 
