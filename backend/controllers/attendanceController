@@ -40,17 +40,19 @@ const createAttendances = asyncHandler(async (req, res) => {
 })
 
 const clockOutAttendances = asyncHandler(async (req, res) => {
-    const todayDate = moment().format('YYYY-MM-DD')
+    const todayDate = moment().format('DD-MMM-YYYY')
+    console.log(todayDate)
     const whereCondition = {
         date: todayDate,
         user: req.user._id.valueOf()
     }
     const userAttendance = await Attendance.findOne(whereCondition)
+    console.log('user attendance', userAttendance)
     if(!userAttendance.time_out){
         userAttendance.time_out =  moment().format("HH:mm:ss");
         try {
             await userAttendance.save();
-            res.status(201).json({message: 'Successfully clock out'})
+            res.status(201).json({ message: 'Successfully clock out', time_out: userAttendance.time_out })
         } catch (error) {
             res.status(401).json({error: 'Error clocking out'})
         }

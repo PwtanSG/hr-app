@@ -15,11 +15,11 @@ const MyAttendances = () => {
     const [status, setStatus] = useState(initStatus)
     const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
     // const API_URL = ''
-    const today = moment().format("DD-MMM-YYYY")
+    const todayDate = moment().format("DD-MMM-YYYY")
 
     const user = JSON.parse(localStorage.getItem('user'))
     if (!user?.token) {
-      navigate('/login')
+        navigate('/login')
     }
     useEffect(() => {
         setLoading(true)
@@ -33,6 +33,8 @@ const MyAttendances = () => {
                     },
                 })
                 setAttendanceList(response.data)
+                console.log(response.data)
+
             } catch (err) {
                 console.log('err', err)
                 setStatus({
@@ -49,15 +51,56 @@ const MyAttendances = () => {
 
     }, [API_URL])
 
+    const todayAttendance = attendanceList.filter(x => x.date === todayDate)
+
+    const clockOut = async () => {
+        console.log('click clockout')
+        setLoading(true)
+
+        const getData = async () => {
+            try {
+                const response = await axios({
+                    method: 'put',
+                    url: `${API_URL}/api/attendances/clockout`,
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                    data: {}
+                })
+                console.log(response.data.time_out)
+                console.log(attendanceList)
+                // setAttendanceList({...attendanceList, time_out:response.data.time_out})
+            } catch (err) {
+                console.log('err', err)
+                setStatus({
+                    ...status,
+                    error: true,
+                    errorMessage: err.response.data.message
+                })
+            }
+
+        }
+        getData()
+
+        setLoading(false)
+    }
+
     return (
         <>
             <div className="container">
                 <h1>My Attendance</h1>
-                <h2>Today : {today}</h2>
-                <div>Clock In Time : </div>
-                <div>Clock Out Time : </div>
+                <h2>Today : {todayDate}</h2>
+                <div>Clock In Time : {todayAttendance.length ? todayAttendance[0]?.time_in : ''}</div>
+                <div>Clock Out Time : {todayAttendance.length
+                    ? todayAttendance[0]?.time_out
+                        ? todayAttendance[0].time_out
+                        : <button className='' onClick={clockOut}> CLOCK OUT</button>
+                    : ''
+                }
+                </div>
                 {isLoading && <FaSpinner className="icon_pulse" />}
             </div>
+            <br />
             {(attendanceList.length > 0) &&
                 <table className='attendance'>
                     <thead>
