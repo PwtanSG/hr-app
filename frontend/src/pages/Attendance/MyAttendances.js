@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import axios from "axios"
+// import axios from "axios"
+import api from '../../api/api'
 import { FaSpinner } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import moment from 'moment'
@@ -13,7 +14,7 @@ const MyAttendances = () => {
         errorMessage: ''
     }
     const [status, setStatus] = useState(initStatus)
-    const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
+    // const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
     // const API_URL = ''
     const todayDate = moment().format("DD-MMM-YYYY")
 
@@ -25,9 +26,9 @@ const MyAttendances = () => {
         setLoading(true)
         const getData = async () => {
             try {
-                const response = await axios({
+                const response = await api({
                     method: 'get',
-                    url: `${API_URL}/api/attendances/myattendance`,
+                    url: '/api/attendances/myattendance',
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },
@@ -49,7 +50,7 @@ const MyAttendances = () => {
 
         setLoading(false)
 
-    }, [API_URL])
+    }, [])
 
     const todayAttendance = attendanceList.filter(x => x.date === todayDate)
 
@@ -59,9 +60,9 @@ const MyAttendances = () => {
 
         const getData = async () => {
             try {
-                const response = await axios({
+                const response = await api({
                     method: 'put',
-                    url: `${API_URL}/api/attendances/clockout`,
+                    url: '/api/attendances/clockout',
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },

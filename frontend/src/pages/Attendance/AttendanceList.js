@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import axios from "axios"
+// import axios from "axios"
+import api from '../../api/api'
 import { FaSpinner } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,7 +13,7 @@ const AttendanceList = () => {
     errorMessage: ''
   }
   const [status, setStatus] = useState(initStatus)
-  const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
+  // const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
   // const API_URL = ''
   const user = JSON.parse(localStorage.getItem('user'))
 
@@ -25,9 +26,9 @@ const AttendanceList = () => {
 
     const getData = async () => {
       try {
-        const response = await axios({
+        const response = await api({
           method: 'get',
-          url: `${API_URL}/api/attendances/list`,
+          url: '/api/attendances/list',
           headers: {
             Authorization: `Bearer ${user.token}`,
             // Authorization: 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI5ODIwNiwiZXhwIjoxNjYyMzAxODA2fQ.BSzYXxecKcTKTH7pNZmGam-2SA0Ta8yrlQi4dd-2Zww",
@@ -48,7 +49,7 @@ const AttendanceList = () => {
 
     setLoading(false)
 
-  }, [API_URL])
+  }, [])
   
   return (
     <div>

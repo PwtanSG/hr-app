@@ -1,4 +1,5 @@
-import axios from 'axios'
+// import axios from 'axios'
+import api from '../api/api'
 import { useState, useEffect } from 'react'
 import { FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
@@ -7,10 +8,7 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
     const [isLoading, setLoading] = useState(false)
     //const API_URL = '/api/users/login'
-    // const API_URL = 'http://localhost:5000/api/users/login'
-    // const API_URL = 'http://localhost:5000'
-    const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
-    // const API_URL = ''
+
     const navigate = useNavigate()
 
     const initStatus = {
@@ -37,24 +35,24 @@ const Login = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            const response = await axios.post(`${API_URL}/api/users/login`, formData)
-            // const response = await axios.post(`${API_URL}`, formData)
+            const response = await api.post('/api/users/login', formData)
+            // const response = await axios.post(`${API_URL}/api/users/login`, formData)
             // console.log(response)
             if (response.status === 200) {
-                if (response?.data){
+                if (response?.data) {
                     localStorage.setItem('user', JSON.stringify(response.data))
                     navigate('/users')
-                }else{
+                } else {
                     setStatus({
-                        ...status, 
-                        error:true, 
+                        ...status,
+                        error: true,
                         errorMessage: response.message
                     })
                 }
             } else {
                 setStatus({
-                    ...status, 
-                    error:true, 
+                    ...status,
+                    error: true,
                     errorMessage: response.message
                 })
             }
@@ -69,7 +67,7 @@ const Login = () => {
             setLoading(false)
         }
     }
-    console.log()
+    // console.log()
     return (
         <>
             <section className='heading'>
@@ -77,7 +75,7 @@ const Login = () => {
                     <FaSignInAlt /> Login
                 </h1>
                 <p>Login your account now</p>
-                {isLoading && <FaSpinner className="icon_pulse"/> }
+                {isLoading && <FaSpinner className="icon_pulse" />}
             </section>
             <section className='form'>
                 <form onSubmit={onSubmitHandler}>
@@ -101,7 +99,7 @@ const Login = () => {
                             onChange={onChangeHandler}
                         ></input>
                     </div>
-                    {status.error && <div className='danger'>{ status.errorMessage }</div>}
+                    {status.error && <div className='danger'>{status.errorMessage}</div>}
                     <button type='submit' className='btn btn-block'>
                         Submit
                     </button>
