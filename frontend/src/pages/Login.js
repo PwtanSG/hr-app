@@ -99,7 +99,7 @@ const Login = () => {
                             onChange={onChangeHandler}
                         ></input>
                     </div>
-                    {status.error && <div className='danger'>{status.errorMessage}</div>}
+                    {status.error && <div className='text-danger'>{status.errorMessage}</div>}
                     <button type='submit' className='btn btn-block'>
                         Submit
                     </button>
