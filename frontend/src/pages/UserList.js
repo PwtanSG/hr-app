@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import axios from "axios"
+// import axios from "axios"
+import api from '../api/api'
 import { FaSpinner } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import DataTable from 'react-data-table-component'
@@ -12,8 +13,7 @@ const UserList = () => {
         errorMessage: ''
     }
     const [status, setStatus] = useState(initStatus)
-    const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
-    // const API_URL = ''
+    const API_URL = '/api/users/list'
     const user = JSON.parse(localStorage.getItem('user'))
     // console.log('user',user['token'])
     // console.log(user?.token? user.token ? :'')
@@ -27,10 +27,9 @@ const UserList = () => {
 
         const getData = async () => {
             try {
-                // const response = await axios.get(`${API_URL}/api/users/list`)
-                const response = await axios({
+                const response = await api({
                     method: 'get',
-                    url: `${API_URL}/api/users/list`,
+                    url: `${API_URL}`,
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                         // Authorization: 'Bearer '+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI4NjI3NiwiZXhwIjoxNjYyMjg5ODc2fQ.okaYOqaR5LlnrhFLWY5YSKiN0SSt1jWIxbebbEZNfWU",
@@ -109,7 +108,7 @@ const UserList = () => {
     return (
         <div>
             <DataTable
-                title="User List"
+                title="User 888 List"
                 columns={columns}
                 data={userList}
                 pagination
