@@ -14,41 +14,44 @@ const Users = () => {
     }
     const [status, setStatus] = useState(initStatus)
     const API_URL = '/api/users/list'
-    const user = JSON.parse(localStorage.getItem('user'))
     // console.log('user',user['token'])
     // console.log(user?.token? user.token ? :'')
     const navigate = useNavigate()
-    if (!user?.token) {
-        navigate('/login')
-    }
-
+    
+    let user = null
     useEffect(() => {
         setLoading(true)
-
-        const getData = async () => {
-            try {
-                const response = await api({
-                    method: 'get',
-                    url: `${API_URL}`,
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                        // Authorization: 'Bearer '+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI4NjI3NiwiZXhwIjoxNjYyMjg5ODc2fQ.okaYOqaR5LlnrhFLWY5YSKiN0SSt1jWIxbebbEZNfWU",
-                    },
-                })
-                setUserList(response.data)
-            } catch (err) {
-                console.log('err', err)
-                setStatus({
-                    ...status,
-                    error: true,
-                    errorMessage: err.response.data.message
-                })
+        if (localStorage.getItem('user') !== null) {
+            const user = JSON.parse(localStorage.getItem('user'))
+            if (!user?.token) {
+                navigate('/login')
             }
-
+            const getData = async () => {
+                try {
+                    const response = await api({
+                        method: 'get',
+                        url: API_URL,
+                        headers: {
+                            Authorization: `Bearer ${user.token}`,
+                            // Authorization: 'Bearer '+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI4NjI3NiwiZXhwIjoxNjYyMjg5ODc2fQ.okaYOqaR5LlnrhFLWY5YSKiN0SSt1jWIxbebbEZNfWU",
+                        },
+                    })
+                    setUserList(response.data)
+                } catch (err) {
+                    console.log('err', err)
+                    setStatus({
+                        ...status,
+                        error: true,
+                        errorMessage: err.response.data.message
+                    })
+                }
+            }
+            getData()
+            setLoading(false)
+        } else {
+            navigate('/login')
         }
-        getData()
 
-        setLoading(false)
 
     }, [API_URL])
 

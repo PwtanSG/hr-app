@@ -15,40 +15,44 @@ const MyAttendances = () => {
     }
     const [status, setStatus] = useState(initStatus)
     // const API_URL = process.env.REACT_APP_BACKEND_DOMAIN
-    // const API_URL = ''
+    const API_URL = '/api/attendances/myattendance'
     const todayDate = moment().format("DD-MMM-YYYY")
-
-    const user = JSON.parse(localStorage.getItem('user'))
-    if (!user?.token) {
-        navigate('/login')
-    }
+    let user = null
     useEffect(() => {
         setLoading(true)
-        const getData = async () => {
-            try {
-                const response = await api({
-                    method: 'get',
-                    url: '/api/attendances/myattendance',
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                    },
-                })
-                setAttendanceList(response.data)
-                console.log(response.data)
-
-            } catch (err) {
-                console.log('err', err)
-                setStatus({
-                    ...status,
-                    error: true,
-                    errorMessage: err.response.data.message
-                })
+        if (localStorage.getItem('user') !== null) {
+            // console.log("not null")
+            user = JSON.parse(localStorage.getItem('user'))
+            if (!user?.token) {
+                navigate('/login')
             }
+            const getData = async () => {
+                try {
+                    const response = await api({
+                        method: 'get',
+                        url: API_URL,
+                        headers: {
+                            Authorization: `Bearer ${user.token}`,
+                        },
+                    })
+                    setAttendanceList(response.data)
+                    // console.log(response.data)
 
+                } catch (err) {
+                    console.log('err', err)
+                    setStatus({
+                        ...status,
+                        error: true,
+                        errorMessage: err.response.data.message
+                    })
+                }
+
+            }
+            getData()
+            setLoading(false)
+        } else {
+            navigate('/login')
         }
-        getData()
-
-        setLoading(false)
 
     }, [])
 
