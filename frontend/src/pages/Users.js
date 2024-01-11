@@ -17,7 +17,7 @@ const Users = () => {
     // console.log('user',user['token'])
     // console.log(user?.token? user.token ? :'')
     const navigate = useNavigate()
-    
+
     let user = null
     useEffect(() => {
         setLoading(true)
@@ -28,14 +28,16 @@ const Users = () => {
             }
             const getData = async () => {
                 try {
-                    const response = await api({
-                        method: 'get',
-                        url: API_URL,
-                        headers: {
-                            Authorization: `Bearer ${user.token}`,
-                            // Authorization: 'Bearer '+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI4NjI3NiwiZXhwIjoxNjYyMjg5ODc2fQ.okaYOqaR5LlnrhFLWY5YSKiN0SSt1jWIxbebbEZNfWU",
-                        },
-                    })
+                    // const response = await api({
+                    //     method: 'get',
+                    //     url: API_URL,
+                    //     // headers: {
+                    //     //     Authorization: `Bearer ${user.token}`,
+                    //     //     // Authorization: 'Bearer '+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTM2ZjJkNWM2ZTdkYTFhODI1MDI5OSIsImlhdCI6MTY2MjI4NjI3NiwiZXhwIjoxNjYyMjg5ODc2fQ.okaYOqaR5LlnrhFLWY5YSKiN0SSt1jWIxbebbEZNfWU",
+                    //     // },
+                    // })
+                    const response = await api.get(API_URL)
+                    console.log(response)
                     setUserList(response.data)
                 } catch (err) {
                     console.log('err', err)

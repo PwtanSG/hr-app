@@ -37,7 +37,7 @@ const Login = () => {
             setLoading(true)
             const response = await api.post('/api/users/login', formData)
             // const response = await axios.post(`${API_URL}/api/users/login`, formData)
-            // console.log(response)
+            console.log(response)
             if (response.status === 200) {
                 if (response?.data) {
                     localStorage.setItem('user', JSON.stringify(response.data))

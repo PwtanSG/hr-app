@@ -6,10 +6,10 @@ const User = require('../models/userModel')
 const listUsers = asyncHandler(async (req, res) => {
     try {
         const list = await User.find().select('-password')
-        if(list){
+        if (list) {
             res.status(200).json(list)
-        }else{
-            res.status(200).json({message: "no data found."})
+        } else {
+            res.status(200).json({ message: "no data found." })
         }
     } catch (error) {
         res.status(400)
@@ -22,12 +22,12 @@ const listUsers = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body
     // Validate
-    if (!name || !email || !password){
+    if (!name || !email || !password) {
         res.status(400)
         throw new Error('Please add all fields')
     }
-    const userExits = await User.findOne({email})
-    if (userExits){
+    const userExits = await User.findOne({ email })
+    if (userExits) {
         res.status(400)
         throw new Error('User already exist.')
     }
@@ -39,7 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
         email,
         password: hashPassword
     })
-    if(user){
+    if (user) {
         res.status(201).json({
             _id: user.id,
             name: user.name,
@@ -55,12 +55,12 @@ const registerUser = asyncHandler(async (req, res) => {
 const createUser = asyncHandler(async (req, res) => {
     const { staff_no, name, email, address, designation, gender, is_admin, password } = req.body
     // Validate
-    if (!name || !email || !password){
+    if (!name || !email || !password) {
         res.status(400)
         throw new Error('Please add all fields')
     }
-    const userExits = await User.findOne({email})
-    if (userExits){
+    const userExits = await User.findOne({ email })
+    if (userExits) {
         res.status(400)
         throw new Error('User already exist.')
     }
@@ -77,7 +77,7 @@ const createUser = asyncHandler(async (req, res) => {
         is_admin,
         password: hashPassword
     })
-    if(user){
+    if (user) {
         res.status(201).json({
             _id: user.id,
             name: user.name,
@@ -90,14 +90,16 @@ const createUser = asyncHandler(async (req, res) => {
 })
 
 const loginUser = asyncHandler(async (req, res) => {
-    const { email, password} = req.body
-    const user = await User.findOne({email})
-    if(user && (await bcrypt.compare(password, user.password))){
+    const { email, password } = req.body
+    const user = await User.findOne({ email })
+    if (user && (await bcrypt.compare(password, user.password))) {
+        let genToken = generateToken(user._id)
+        res.cookie('token', genToken)
         res.status(200).json({
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id)
+            token: genToken
 
         })
     } else {
@@ -109,9 +111,9 @@ const loginUser = asyncHandler(async (req, res) => {
 const getMe = asyncHandler(async (req, res) => {
     const { _id, name, email } = await User.findById(req.user.id)
     res.status(200).json({
-            id: _id,
-            name,
-            email,
+        id: _id,
+        name,
+        email,
     })
 })
 
@@ -119,7 +121,7 @@ const generateToken = (id) => {
     return jwt.sign(
         { id },
         process.env.JWT_SECRET,
-        { expiresIn: 3600} //1 hr
+        { expiresIn: 3600 } //1 hr
     )
 }
 
