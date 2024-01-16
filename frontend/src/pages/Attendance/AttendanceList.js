@@ -24,6 +24,7 @@ const AttendanceList = () => {
   useEffect(() => {
     setLoading(true)
 
+    const controller = new AbortController
     const getData = async () => {
       try {
         const response = await api({
@@ -46,11 +47,14 @@ const AttendanceList = () => {
 
     }
     getData()
-
     setLoading(false)
 
+    return () => {
+      controller.abort()
+    }
+
   }, [])
-  
+
   return (
     <div>
       <h1>Attendance List</h1>

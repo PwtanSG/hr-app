@@ -17,7 +17,7 @@ const Users = () => {
     // console.log('user',user['token'])
     // console.log(user?.token? user.token ? :'')
     const navigate = useNavigate()
-    
+
     let user = null
     useEffect(() => {
         setLoading(true)
@@ -26,6 +26,8 @@ const Users = () => {
             if (!user?.token) {
                 navigate('/login')
             }
+
+            const controller = new AbortController
             const getData = async () => {
                 try {
                     const response = await api({
@@ -48,6 +50,11 @@ const Users = () => {
             }
             getData()
             setLoading(false)
+            
+            return () => {
+                // Abort api request when component unmount or dependency changes
+                controller.abort()
+            }
         } else {
             navigate('/login')
         }

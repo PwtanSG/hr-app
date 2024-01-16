@@ -26,6 +26,8 @@ const MyAttendances = () => {
             if (!user?.token) {
                 navigate('/login')
             }
+
+            const controller = new AbortController
             const getData = async () => {
                 try {
                     const response = await api({
@@ -50,6 +52,10 @@ const MyAttendances = () => {
             }
             getData()
             setLoading(false)
+
+            return () => {
+                controller.abort()
+            }
         } else {
             navigate('/login')
         }

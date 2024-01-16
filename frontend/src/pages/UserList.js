@@ -26,6 +26,8 @@ const UserList = () => {
             if (!user?.token) {
                 navigate('/login')
             }
+
+            const controller = new AbortController
             const getData = async () => {
                 try {
                     const response = await api({
@@ -45,10 +47,14 @@ const UserList = () => {
                         errorMessage: err.response.data.message
                     })
                 }
-
             }
             getData()
             setLoading(false)
+            
+            return () => {
+                // Abort api request when component unmount or dependency changes
+                controller.abort()
+            }
         } else {
             navigate('/login')
         }
